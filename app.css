@@ -61,7 +61,8 @@ main { max-width: 980px; margin: 0 auto; padding: 0 20px calc(110px + var(--safe
 .form-sec h2 { padding-left: 14px; border-left: 4px solid var(--accent); }
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 16px; }
 .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.w1 { grid-column: span 1; } .w2 { grid-column: span 2; } .w3 { grid-column: 1 / -1; }
+.w1 { grid-column: span 1; }
+.field:has(.datewrap) { min-width: 0; } .w2 { grid-column: span 2; } .w3 { grid-column: 1 / -1; }
 .flabel { font-size: 14px; color: var(--muted); font-weight: 600; }
 .flabel .unit { font-weight: 400; } .req { color: var(--accent); }
 .hint { font-weight: 400; color: var(--muted); font-size: 13px; }
@@ -144,3 +145,7 @@ label.btn { cursor: pointer; }
   h1 { font-size: 24px; }
 }
 @media (max-width: 420px) { .grid { grid-template-columns: 1fr; } .w1 { grid-column: 1 / -1; } }
+
+.datewrap { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.datewrap .input { flex: 1 1 100%; min-width: 0; }
+.datewrap .btn { flex: 1; min-height: 44px; padding: 0 10px; }

@@ -76,8 +76,6 @@ function newRecord() {
   return {
     id: uid(), created: d.toISOString(), updated: d.toISOString(), status: "Entwurf",
     data: {
-      anfrage_nr: `KL-${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}`,
-      anfrage_datum: today(), unterschrift_datum: today(),
       anfrage_bearbeiter: ls.get("bearbeiter") || "",
       raeume: [{ id: uid() }], fotos: {},
     },
@@ -132,6 +130,13 @@ function fieldEl(f, get, set, idPrefix = "") {
       if (f.t === "number") { const c = inp.value.replace(/[^0-9,.\-]/g, "").replace(".", ","); if (c !== inp.value) inp.value = c; }
       set(f.k, inp.value);
     });
+    if (f.t === "date" || f.t === "time") {
+      const nowVal = () => { const n = new Date(); return f.t === "date" ? today() : `${pad(n.getHours())}:${pad(n.getMinutes())}`; };
+      const clr = h("button", { type: "button", class: "btn btn-ghost sm", "aria-label": `${f.l} leeren`, onclick: () => { inp.value = ""; set(f.k, ""); } }, "Leeren");
+      const now = h("button", { type: "button", class: "btn btn-outline sm", onclick: () => { inp.value = nowVal(); set(f.k, inp.value); } }, f.t === "date" ? "Heute" : "Jetzt");
+      inp.addEventListener("change", () => set(f.k, inp.value));
+      wrap.append(lab, h("div", { class: "datewrap" }, inp, now, clr));
+    } else
     wrap.append(lab, f.unit && f.t === "number" ? h("div", { class: "unitwrap" }, inp, h("span", {}, f.unit)) : inp);
   } else if (f.t === "textarea") {
     const ta = h("textarea", { id, class: "input", rows: 3, placeholder: f.ph || "" }); ta.value = val || "";
